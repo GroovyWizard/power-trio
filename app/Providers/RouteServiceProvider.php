@@ -10,6 +10,33 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
+
+    protected function mapWebRoutes()
+    {
+        foreach ($this->centralDomains() as $domain) {
+            Route::middleware('web')
+                ->domain($domain)
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));
+        }
+    }
+
+    protected function mapApiRoutes()
+    {
+        foreach ($this->centralDomains() as $domain) {
+            Route::prefix('api')
+                ->domain($domain)
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api.php'));
+        }
+    }
+
+    protected function centralDomains(): array
+    {
+        return config('tenancy.central_domains');
+    }
+
     /**
      * The path to the "home" route for your application.
      *
@@ -28,6 +55,9 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
+        $this->mapWebRoutes();
+        $this->mapApiRoutes();
+
         $this->routes(function () {
             Route::prefix('api')
                 ->middleware('api')
@@ -36,6 +66,8 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+
+
     }
 
     /**
