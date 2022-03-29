@@ -20,3 +20,5 @@ Features: Create Article type(news) when album or song is added
 
 
 Features: Working music player (from spotify ex), 
+
+![image](https://user-images.githubusercontent.com/78284549/160218502-7206069b-e831-4102-9465-40f70be8deaf.png)
